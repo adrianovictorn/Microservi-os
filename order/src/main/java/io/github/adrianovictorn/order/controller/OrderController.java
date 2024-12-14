@@ -2,8 +2,7 @@ package io.github.adrianovictorn.order.controller;
 
 import java.util.List;
 
-import io.github.adrianovictorn.order.constantes.RabbitMQConstantes;
-import io.github.adrianovictorn.order.dto.UserDto;
+import io.github.adrianovictorn.order.model.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,14 +34,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> cadastrarPedido(@RequestBody OrderDto orderDto) {
-        if (orderDto.getUser() == null || orderDto.getUser().getId() == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        OrderDto orderCadastrada = orderService.cadastrarPedido(orderDto);
-        orderService.enviaMensagem(RabbitMQConstantes.FILA_PEDIDO, orderCadastrada);
-
+    public ResponseEntity<OrderDto> cadastrarPedido(@RequestBody OrderDto order) {
+        OrderDto orderCadastrada = orderService.cadastrarPedido(order);
         return ResponseEntity.ok(orderCadastrada);
     }
 

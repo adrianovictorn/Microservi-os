@@ -1,13 +1,21 @@
 package io.github.adrianovictorn.order.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class UserDto {
+
     private Long id;
-    private String name;
+    private String nome;
+
+    // Construtor sem argumentos (necessário para Jackson)
+    public UserDto() {
+    }
+
+    // Construtor com argumentos
+    public UserDto(Long id) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -17,11 +25,11 @@ public class UserDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

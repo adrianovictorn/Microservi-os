@@ -1,11 +1,8 @@
 package io.github.adrianovictorn.order.dto;
 
 import io.github.adrianovictorn.order.model.Order;
-import org.apache.catalina.User;
-
 
 import java.io.Serializable;
-
 
 public class OrderDto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -14,11 +11,13 @@ public class OrderDto implements Serializable {
     private final String descricao;
     private UserDto user;
 
-    public OrderDto(Long id, String nome, String descricao) {
+
+
+    public OrderDto(Long id, String nome, String descricao, UserDto user) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-
+        this.user = user;
     }
 
     public Order toEntity() {
@@ -26,12 +25,18 @@ public class OrderDto implements Serializable {
         order.setId(this.id);
         order.setNome(this.nome);
         order.setDescricao(this.descricao);
-        order.setUserId(this.user.getId());
+        if (this.user != null) {
+            order.setUserId(this.user.getId());
+        }
         return order;
     }
 
     public static OrderDto fromEntity(Order order) {
-        return new OrderDto(order.getId(), order.getNome(), order.getDescricao());
+        UserDto userDto = null;
+        if (order.getUserId() != null) {
+            userDto = new UserDto(order.getId());
+        }
+        return new OrderDto(order.getId(), order.getNome(), order.getDescricao(), userDto);
     }
 
     public Long getId() {
@@ -49,6 +54,7 @@ public class OrderDto implements Serializable {
     public UserDto getUser() {
         return user;
     }
+
     public void setUser(UserDto user) {
         this.user = user;
     }

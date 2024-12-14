@@ -1,10 +1,12 @@
 package io.github.adrianovictorn.user.producer;
 
+import io.github.adrianovictorn.user.dto.UserValidationMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-import io.github.adrianovictorn.user.constantes.RabbitMQConstantes;
 import io.github.adrianovictorn.user.dto.UserDto;
+
+import static io.github.adrianovictorn.user.config.RabbitMQConfig.ORDER_QUEUE;
 
 @Component
 public class UserProducer {
@@ -15,7 +17,8 @@ public class UserProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendUser(UserDto userDto) {
-        rabbitTemplate.convertAndSend(RabbitMQConstantes.FILA_PEDIDO, userDto);
+    public void sendValidationResponse(UserValidationMessage message) {
+        rabbitTemplate.convertAndSend(ORDER_QUEUE, message);
     }
 }
+

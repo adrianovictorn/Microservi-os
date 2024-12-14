@@ -37,12 +37,8 @@ public class UserService {
         User user = userDto.toEntity();
         User savedUser = userRepository.save(user);
         UserDto savedUserDto = UserDto.fromEntity(savedUser);
-
-        // Enviar dados para a fila de pedidos
-        userProducer.sendUser(savedUserDto);
         return savedUserDto;
     }
-
 
     public UserDto buscarPorId(Long id){
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não cadastrado"));
@@ -69,12 +65,10 @@ public class UserService {
         userRepository.save(user); // Salva ou atualiza o usuário na base local
     }
 
-    public void enviaMensagem(String nome, Object mensagem){
-        this.rabbitTemplate.convertAndSend(nome,mensagem);
+
+
+    public boolean validateUser(Long userId) {
+        return userRepository.existsById(userId);
     }
-
-   
-
-    
-
 }
+
